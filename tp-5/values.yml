@@ -7,7 +7,7 @@ service:
 persistence:
   enabled: false
 mariadb:
-  master:
+  primary:
     persistence:
       enabled: false
   
