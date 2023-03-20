@@ -12,3 +12,4 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/data-pv"
+    type: DirectoryOrCreate     
