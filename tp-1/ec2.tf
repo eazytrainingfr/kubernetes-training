@@ -17,7 +17,7 @@ provider "aws" {
 resource "aws_instance" "myec2" {
   ami             = "ami-0d71ca6a78e324f68" # CentOS 7
   instance_type   = "t3.large"              # you can change this
-  key_name        = "your-public-key.pem"
+  key_name        = "your-public-key.pem"  # the name of your public key
   security_groups = ["franklin-sg"]
 
   root_block_device {
@@ -28,7 +28,7 @@ resource "aws_instance" "myec2" {
   connection {
     type        = "ssh"
     user        = "centos"
-    private_key = file("./your-public-key.pem")
+    private_key = file("./your-public-key.pem")   # the public key must be in the same folder as ec2.tf
     host        = self.public_ip
   }
 
