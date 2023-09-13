@@ -1,4 +1,4 @@
-Installing minikube on an EC2 machine with Terrafirm  
+Installing minikube on an EC2 machine with Terraform  
 
 1. Create and download a public key from AWS and put it in the same directory as the ec2.tf file
 2. Creat access key and secret key
@@ -10,7 +10,7 @@ terraform init
 terraform plan
 ```
 ```
-terraform aplly --auto-approve
+terraform apply --auto-approve
 ```
 
 4. Once the execution of the terraform apply command is complete, open the newly created infos_ec2.txt file to retrieve the public IP of EC2
