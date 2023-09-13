@@ -62,7 +62,7 @@ resource "aws_instance" "myec2" {
 }
 
 resource "aws_security_group" "allow_http_https" {
-  name        = "foko-sg"
+  name        = "franklin-sg"
   description = "Allow http and https inbound traffic"
 
   ingress {
