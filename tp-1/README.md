@@ -13,9 +13,9 @@ terraform plan
 terraform apply --auto-approve
 ```
 
+4. Once the execution of the terraform apply command is complete, open the newly created infos_ec2.txt file to retrieve the public IP of EC2  
+
 to delete all resources  
 ```
-terraform apply --auto-approve
+terraform destroy --auto-approve
 ```
-
-4. Once the execution of the terraform apply command is complete, open the newly created infos_ec2.txt file to retrieve the public IP of EC2
