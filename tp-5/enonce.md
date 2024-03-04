@@ -1,4 +1,6 @@
-#### TP6: INTRODUCTION A HELM
+#### TP6: INTRODUCTION A HELM (minikube exclusivement car ce TP nécessite au moins la version 1.19 de kubernetes et la version kubernetes est 1.18 sur l'environnement [eazylabs](http://docker.labs.eazytraining.fr/)) 
+
+
 https://devopscube.com/install-configure-helm-kubernetes/
 
 recuperation du script d'installation

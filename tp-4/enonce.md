@@ -1,4 +1,4 @@
-#### TP4: GESTION DU STOCKAGE
+#### TP4: GESTION DU STOCKAGE (minikube et [eazylabs](http://docker.labs.eazytraining.fr/)) 
 
 VOLUME
 ```bash

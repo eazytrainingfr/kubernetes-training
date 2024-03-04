@@ -1,4 +1,4 @@
-#### TP 2 DEPLOYEZ VOTRE PREMIERE APPLICATION :
+#### TP 2 DEPLOYEZ VOTRE PREMIERE APPLICATION (minikube et [eazylabs](http://docker.labs.eazytraining.fr/)) :
 
 - Créez un repertoire Kubernetes-training et un sous-dossier tp-2 et copiez vos manifests à l’interieur
     mkdir -p Kubernetes-training/tp-2

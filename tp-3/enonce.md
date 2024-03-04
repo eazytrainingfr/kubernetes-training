@@ -1,4 +1,4 @@
-#### TP3: GESTION DU RESEAU
+#### TP3: GESTION DU RESEAU (minikube et [eazylabs](http://docker.labs.eazytraining.fr/)) 
 
 ```bash 
 # afficher les pods avec leur label 

@@ -1,4 +1,4 @@
-#### TP1: COMPOSANT ET INSTALLATION DE MINIKUBE
+#### TP1: COMPOSANT ET INSTALLATION DE MINIKUBE (VM CENTOS 7.9)
 
 Il est important de noter que lors de cette formation nous n'allons pas faire l'installation d'un cluster complet, nous allons travailler sur du single node ie sur un seul noeud déployé sur une VM ayant comme OS centos 7
 
