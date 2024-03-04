@@ -11,5 +11,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data-pv"
-    type: DirectoryOrCreate     
+    path: "/data-pv"     

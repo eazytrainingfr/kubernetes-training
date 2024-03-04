@@ -10,5 +10,4 @@ mariadb:
   primary:
     persistence:
       enabled: false
-seccompProfile:
-  type: "RuntimeDefault"
+
