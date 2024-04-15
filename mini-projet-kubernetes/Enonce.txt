@@ -1,0 +1,2 @@
+Etant donné le docker compose de wordpress ou odoo, déployez l'application dans le cluster k8s
+Une image vous est fournie en PJ pour visualiser l'architecture à mettre en oeuvre
