@@ -1,0 +1,177 @@
+UDEMY UPDATE COURSE
+
+K8S
+
+https://eazytraining.fr/cours/kubernetes-les-bases-pour-devops-partie-2/
+
+commandes nécessaires
+
+>> Module 08 : AWS + EKS
+
+https://eazytraining.fr/cours/kubernetes-les-bases-pour-devops-partie-2/lessons/tp-deploiement-du-cluster-k8s-avec-eks-copy-3/
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export AWS_DEFAULT_REGION=us-east-1
+
+sudo apt update
+
+sudo apt install unzip
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin/
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+aws --version
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+
+eksctl create cluster \
+  --name eazy \
+  --region us-east-1 \
+  --version 1.34 \
+  --managed \
+  --nodegroup-name ng-workers \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 5 \
+  --node-volume-size 50 \
+  --ssh-access \
+  --ssh-public-key devops-terraform \
+  --with-oidc \
+  --asg-access \
+  --tags "env=dev,team=eazytraining"
+
+kubectl get node
+
+eksctl utils write-kubeconfig --cluster eazy --kubeconfig=$HOME/cluster-eazy-config
+
+export KUBECONFIG=$HOME/cluster-eazy-config
+
+sudo echo 'source <(kubectl completion bash)' >> ${HOME}/.bashrc && source ${HOME}/.bashrc
+
+eksctl delete cluster --name eazy --region us-east-1
+
+
+>> Module 09 : GitOps avec Jenkins-x
+
++ Ajouter la police "DescribeInternetGateways" au service role: eksctl-eazy-cluster-ServiceRole-*** (AWS service: eks-fargate-pods, etc...)
+eksctl-eazy-cluster-PolicyELBPermissions
+{
+  "Version": "2012-10-17"
+  "Statement": [
+    {
+      "Action": [
+        "ec2:DescribeAccountAttributes",
+        "ec2:DescribeInternetGateways"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
+    }
+  ]
+}
+
++ se procurer un nom de domaine sur godaddy ou no-ip pour rediriger le traffic vers votre cluster k8s
+
++ Se rendre sur la VM d'administration 
+
+git --version
+
+curl -L https://github.com/jenkins-x/jx/releases/download/$(curl --silent "https://github.com/jenkins-x/jx/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#')/jx-linux-amd64.tar.gz | tar xzv "jx"
+ou bien
+curl -L https://github.com/jenkins-x/jx/releases/download/v2.1.150/jx-linux-amd64.tar.gz | tar xzv
+
+sudo mv jx /usr/local/bin
+
+sudo su -
+
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export AWS_DEFAULT_REGION=us-east-1
+
+eksctl utils write-kubeconfig --name=eazy --kubeconfig=$HOME/eazy
+export KUBECONFIG=$HOME/eazy
+sudo echo 'source <(kubectl completion bash)' >> ${HOME}/.bashrc && source ${HOME}/.bashrc
+
+jx boot KUBERNETES_SERVICE_HOST KUBERNETES_SERVICE_PORT
+
+vi ~/jenkins-x-boot-config/jx-requirements.yml
+
+modifier les valeurs du provider et du domain avec:
+provider: eks
+ingress:
+  domain: jx.eazytraining.fr
+  ignoreLoadBalancer: true
+
+créer un token github pour jenkins-x
+
+Renseigner les infos de 1ère configuration:
+- Admin Username
+- Admin Password
+- Git username
+- Git email address
+- Git token
+- default Docker Registry: No
+
+Resize cluster VMs for jenkins-x: from micro to large
+sudo su -
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export AWS_DEFAULT_REGION=us-east-1
+export KUBECONFIG=$HOME/eazy
+jx boot
+
+kubectl get ingress
+kubectl get svc
+kubectl get svc -n kube-system
+
+REGISTER A DOMAIN NAME IN GODADDY OR NO-IP:
+Type: CNAME - Hôte: *.jx.eazytraining.fr - Pointe sur: addresse (dns ou ip) de l'elb
+
+ping hook-jx.jx.eazytraining.fr
+
+jx create quickstart 
+  > node-http
+  > github.com username
+  > API Token
+  > repository name
+  > initialize ?
+  > different namespace for preview ?
+
+jx get activity -f node-eazy-jenkins-x -w
+jx get application
+
+eksctl delete cluster --name=eazy
+delete bastion/admin vm
+
+<<
+// curl -L https://github.com/jenkins-x/jx/releases/download/v2.1.140/jx-linux-amd64.tar.gz | tar xzv 
+// sudo mv jx /usr/local/bin
+
+// https://jenkins-x.io/
+// https://github.com/jenkins-x/jx
+>>
+
+Module 10 : Tekton - Pipelines
+
+Module 11 : Polaris - Gouvernance + Conformité d'un cluster K8S
+
+Module 12 : Auto-DevOps : Gitlab-CI + EKS
+
+Module 13 : Istio - Service Mesh
+
+Module 14 : Backup k8s avec velero
+
+Module 15 : Kustomize
+
+Module 16 : Serverless avec Kubernetes + OpenFAAS
+
+Module 17 : Bonus
+
+Module 18 : Mini-projet
+
+Module 19 : play with kubernetes

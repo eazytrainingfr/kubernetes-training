@@ -1,0 +1,98 @@
+>> Module: GitOps avec Jenkins-x
+
++ Ajouter la police "DescribeInternetGateways" au service role: eksctl-eazy-cluster-ServiceRole-*** (AWS service: eks-fargate-pods, etc...)
+eksctl-eazy-cluster-PolicyELBPermissions
+{
+  "Version": "2012-10-17"
+  "Statement": [
+    {
+      "Action": [
+        "ec2:DescribeAccountAttributes",
+        "ec2:DescribeInternetGateways"
+      ],
+      "Resource": "*",
+      "Effect": "Allow"
+    }
+  ]
+}
+
++ se procurer un nom de domaine sur godaddy ou no-ip pour rediriger le traffic vers votre cluster k8s
+
++ Se rendre sur la VM d'administration 
+
+git --version
+
+curl -L https://github.com/jenkins-x/jx/releases/download/$(curl --silent "https://github.com/jenkins-x/jx/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#')/jx-linux-amd64.tar.gz | tar xzv "jx"
+ou bien
+curl -L https://github.com/jenkins-x/jx/releases/download/v2.1.150/jx-linux-amd64.tar.gz | tar xzv
+
+sudo mv jx /usr/local/bin
+
+sudo su -
+
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export AWS_DEFAULT_REGION=us-east-1
+
+eksctl utils write-kubeconfig --name=eazy --kubeconfig=$HOME/eazy
+export KUBECONFIG=$HOME/eazy
+sudo echo 'source <(kubectl completion bash)' >> ${HOME}/.bashrc && source ${HOME}/.bashrc
+
+jx boot KUBERNETES_SERVICE_HOST KUBERNETES_SERVICE_PORT
+
+vi ~/jenkins-x-boot-config/jx-requirements.yml
+
+modifier les valeurs du provider et du domain avec:
+provider: eks
+ingress:
+  domain: jx.eazytraining.fr
+  ignoreLoadBalancer: true
+
+créer un token github pour jenkins-x
+
+Renseigner les infos de 1ère configuration:
+- Admin Username
+- Admin Password
+- Git username
+- Git email address
+- Git token
+- default Docker Registry: No
+
+Resize cluster VMs for jenkins-x: from micro to large
+sudo su -
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export AWS_DEFAULT_REGION=us-east-1
+export KUBECONFIG=$HOME/eazy
+jx boot
+
+kubectl get ingress
+kubectl get svc
+kubectl get svc -n kube-system
+
+REGISTER A DOMAIN NAME IN GODADDY OR NO-IP:
+Type: CNAME - Hôte: *.jx.eazytraining.fr - Pointe sur: addresse (dns ou ip) de l'elb
+
+ping hook-jx.jx.eazytraining.fr
+
+jx create quickstart 
+  > node-http
+  > github.com username
+  > API Token
+  > repository name
+  > initialize ?
+  > different namespace for preview ?
+
+jx get activity -f node-eazy-jenkins-x -w
+jx get application
+
+eksctl delete cluster --name=eazy
+delete bastion/admin vm
+
+<<
+// curl -L https://github.com/jenkins-x/jx/releases/download/v2.1.140/jx-linux-amd64.tar.gz | tar xzv 
+// sudo mv jx /usr/local/bin
+
+// https://jenkins-x.io/
+// https://github.com/jenkins-x/jx
+>>

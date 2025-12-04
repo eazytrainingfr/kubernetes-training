@@ -1,0 +1,53 @@
+https://eazytraining.fr/cours/kubernetes-les-bases-pour-devops-partie-2/
+
+commandes nécessaires
+
+>> Module 08 : AWS + EKS
+
+https://eazytraining.fr/cours/kubernetes-les-bases-pour-devops-partie-2/lessons/tp-deploiement-du-cluster-k8s-avec-eks-copy-3/
+export AWS_ACCESS_KEY_ID=XXXXXXXXXXXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export AWS_DEFAULT_REGION=us-east-1
+
+sudo apt update
+
+sudo apt install unzip
+
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin/
+
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+aws --version
+
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+sudo mv kubectl /usr/local/bin/
+
+eksctl create cluster \
+  --name eazy \
+  --region us-east-1 \
+  --version 1.34 \
+  --managed \
+  --nodegroup-name ng-workers \
+  --node-type t3.medium \
+  --nodes 2 \
+  --nodes-min 1 \
+  --nodes-max 5 \
+  --node-volume-size 50 \
+  --ssh-access \
+  --ssh-public-key devops-terraform \
+  --with-oidc \
+  --asg-access \
+  --tags "env=dev,team=eazytraining"
+
+kubectl get node
+
+eksctl utils write-kubeconfig --cluster eazy --kubeconfig=$HOME/cluster-eazy-config
+
+export KUBECONFIG=$HOME/cluster-eazy-config
+
+sudo echo 'source <(kubectl completion bash)' >> ${HOME}/.bashrc && source ${HOME}/.bashrc
+
+eksctl delete cluster --name eazy --region us-east-1
